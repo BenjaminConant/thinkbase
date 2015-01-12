@@ -1,0 +1,111 @@
+body {
+  background-color: whitesmoke;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+.thing-form {
+    margin: 20px 0;
+}
+
+#banner {
+    border-bottom: none;
+    margin-top: -20px;
+}
+
+#banner h1 {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+#landing-page-content h1 {
+  text-align: center;
+}
+
+.link-grid {
+  text-align: center;
+}
+
+.title input {
+  background-color: whitesmoke;
+  outline: none;
+}
+
+.link {
+
+}
+
+.link-wrapper {
+  background-color: white;
+  border: 1px solid black;
+  margin-bottom: 20px;
+  box-shadow: 5px 5px 3px #888888;
+}
+
+.link-admin-bar {
+  background-color: red;
+
+}
+
+.link-content {
+  padding-top: 20px;
+  overflow: auto;
+}
+
+ .link-url {
+  margin-bottom: 20px;
+}
+
+.link-thumbnail-image {
+  height: 75px;
+  width: 75px;
+}
+
+.notes {
+  overflow: auto;
+  background-color: aliceblue;
+  width:100%;
+  text-align:left;
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.notes input {
+  width: 95%;
+}
+
+.add-link {
+  height: 200px;
+  border: 3px dotted grey;
+}
+
+.add-link button {
+  margin-top: 80px;
+}
+
+.remove-link-button {
+  display: none;
+}
+
+.link-content:hover .remove-link-button {
+  display: inline;
+}
+
+.hero-unit {
+    position: relative;
+    padding: 30px 15px;
+    color: #F5F5F5;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    background: #4393B9;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 70px;
+    border-top: 1px solid #E5E5E5;
+}
