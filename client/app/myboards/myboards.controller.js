@@ -79,6 +79,8 @@ angular.module('quizerdApp')
          link.images = linkData.images;
          link.displayImageIndex = 0;
          link.edit = !link.edit;
+         console.log(linkData.domain);
+         link.domain = linkData.domain;
          $scope.updateBoard();
        });
      }
