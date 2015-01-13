@@ -5,6 +5,7 @@ var cheerio = require('cheerio');
 var util = require('util');
 var _ = require('lodash');
 var Link = require('./link.model');
+var domains = ["www", "us"];
 
 
 
@@ -18,15 +19,34 @@ exports.imdb = function (req, res) {
 };
 
 
+http://getbootstrap.com/
+
 exports.scrapeLink = function (req, res) {
 
   var url = req.body.url;
   request(url, function(error, response, html){
-    var domain = req.body.url.substring(7, req.body.url.length - 1).split("/")[0];
+
+
+
+    if (req.body.url.substring(0,7) === "http://") {
+      var domain = req.body.url.substring(7, req.body.url.length).split("/")[0];
+      domain = domain.split('.');
+      if (domains.indexOf(domain[0]) !== -1) {
+        domain.shift();
+      }
+      domain = domain.join('.');
+
+    } else {
+      var domain = req.body.url.substring(8, req.body.url.length).split("/")[0];
+    }
+
+
+
+
     var $ = cheerio.load(html);
     var title = $('title').html();
     var body = $('body').html();
-    console.log(body);
+
 
 
     var images = $('body img').get();
@@ -46,7 +66,7 @@ exports.scrapeLink = function (req, res) {
       } else if ((imageFilePath.substring(0,7) === "http://") || (imageFilePath.substring(0,8) === "https://") ) {
         // do nothing!!!
       } else {
-        console.log("there may be a problem with this image ... check link.controller line 31");
+      //  console.log("there may be a problem with this image ... check link.controller line 31");
         // do nothing!!!
       }
       imageArray.push(imageFilePath)
@@ -54,7 +74,6 @@ exports.scrapeLink = function (req, res) {
 
 
 
-  //
   //   var favicon = $('link[rel="shortcut icon"]').get()
   //   if (favicon[0]) {
   //   favicon = favicon[0].attribs.href;
@@ -71,8 +90,8 @@ exports.scrapeLink = function (req, res) {
 
 
 
-    console.log(imageArray);
-    return res.json(200, {'title': title, 'images': imageArray});
+  //  console.log(imageArray);
+    return res.json(200, {'title': title, 'images': imageArray, 'domain': domain});
   })
 };
 
