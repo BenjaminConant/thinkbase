@@ -41,6 +41,8 @@ angular.module('quizerdApp')
       this.url = "";
       this.title = "";
       this.notes = [];
+      this.images = [];
+      this.displayImageIndex;
     }
 
     function Note() {
@@ -74,17 +76,30 @@ angular.module('quizerdApp')
        $http.post('/api/links/', {'url': link.url}).success(function(linkData) {
          console.log(linkData);
          link.title = linkData.title;
-         link.favicon = linkData.favicon; 
+         link.images = linkData.images;
+         link.displayImageIndex = 0;
          link.edit = !link.edit;
          $scope.updateBoard();
        });
      }
 
+     $scope.linkImageScroll = function (link, direction) {
+       console.log("hello!!");
+       console.log(direction);
+       if (direction === "right") {
+         link.displayImageIndex += 1;
+       } else {
+         link.displayImageIndex -= 1;
+       }
+       $scope.updateBoard();
+     }
 
      // open a link
      $scope.openLink = function (url){
        $window.open(url);
      }
+
+
 
 
 

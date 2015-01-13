@@ -48,7 +48,11 @@
           <span ng-click="removeLink($index)" class="glyphicon glyphicon-remove pull-right"></span>
         </div>
         <div class="link-content">
-           <img class="link-thumbnail-image" ng-src="{{link.favicon}}"/>
+           <div ng-show="link.images">
+             <span class="glyphicon glyphicon-chevron-left" ng-click="linkImageScroll(link, 'left')"></span>
+             <img ng-show="link.images" class="link-thumbnail-image" ng-src="{{link.images[link.displayImageIndex]}}"/>
+             <span class="glyphicon glyphicon-chevron-right" ng-click="linkImageScroll(link, 'right')"></span>
+           </div>
              <div class="link-url">
             <form ng-submit="scrapeLink(link)">
               <input ng-show="link.edit" ng-model="link.url" placeholder="place link here">
