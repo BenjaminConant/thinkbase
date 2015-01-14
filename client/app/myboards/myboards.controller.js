@@ -107,7 +107,22 @@ angular.module('quizerdApp')
        $window.open(url);
      }
 
+     function Board() {
+       this.creatorId = "";
+       this.title = "";
+       this.description = "";
+       this.links = [];
+     }
 
+
+     $scope.newBoard = function () {
+      var newBoard = new Board;
+      newBoard.creatorId = Auth.getCurrentUser()._id;
+      newBoard.title = "New Board"
+      board.save(newBoard).success(function(board) {
+        $location.path('/myboards/' + Auth.getCurrentUser()._id +'/' + board._id);
+      });
+     }
 
 
 

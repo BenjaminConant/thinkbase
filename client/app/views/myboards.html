@@ -7,11 +7,12 @@
 </header>
 
 
+
 <div class="container" id="landing-page-content">
   <div class="row">
     <div class="btn-group" role="group" aria-label="...">
       <a ng-repeat="boardMeta in currentUser.boards" href="myboards/{{currentUser._id}}/{{boardMeta.id}}" type="button" ng-class="{active: isActive(boardMeta.id)}" class="btn btn-default">{{boardMeta.title}}</a>
-      <a href="/newboard" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"><span></a>
+      <div ng-click="newBoard()" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"><span></div>
     </div>
   </div>
 
