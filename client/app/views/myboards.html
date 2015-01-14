@@ -58,7 +58,7 @@
               <input ng-show="link.edit" ng-model="link.url" placeholder="place link here">
             </form>
             <div class="text-left domain-text" ng-hide="link.edit"><strong>{{link.domain}}</strong></div>
-            <a ng-hide="link.edit" target="_blank" href="link.url" ng-click="openLink(link.url)">{{link.title}}</a>
+            <a ng-hide="link.edit" target="_blank" href="link.url" ng-click="openLink(link.url)" ng-bind-html="link.title"></a>
           </div>
         </div>
 
