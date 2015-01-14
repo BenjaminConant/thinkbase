@@ -48,7 +48,7 @@
           <span ng-click="removeLink($index)" class="glyphicon glyphicon-remove pull-right"></span>
         </div>
         <div class="link-content">
-           <div ng-show="link.images">
+           <div ng-show="link.images.length > 0">
              <span class="glyphicon glyphicon-chevron-left" ng-click="linkImageScroll(link, 'left')"></span>
              <img ng-show="link.images" class="link-thumbnail-image" ng-src="{{link.images[link.displayImageIndex]}}"/>
              <span class="glyphicon glyphicon-chevron-right" ng-click="linkImageScroll(link, 'right')"></span>

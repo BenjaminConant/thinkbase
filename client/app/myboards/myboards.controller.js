@@ -86,15 +86,21 @@ angular.module('quizerdApp')
      }
 
      $scope.linkImageScroll = function (link, direction) {
-       console.log("hello!!");
-       console.log(direction);
        if (direction === "right") {
          link.displayImageIndex += 1;
        } else {
          link.displayImageIndex -= 1;
        }
        $scope.updateBoard();
-     }
+
+
+       if (link.displayImageIndex > link.images.length - 1) {
+         link.displayImageIndex = 0;
+       } else if (link.displayImageIndex < 0) {
+         link.displayImageIndex = link.images.length -1;
+       }
+
+   }
 
      // open a link
      $scope.openLink = function (url){

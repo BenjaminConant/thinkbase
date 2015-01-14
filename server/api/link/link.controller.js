@@ -61,15 +61,16 @@ exports.scrapeLink = function (req, res) {
 
       if (imageFilePath.substring(0,2) === "//" ) {
         imageFilePath = "http:" + imageFilePath;
+        imageArray.push(imageFilePath);
       } else if (imageFilePath.substring(0,1) === "/" ) {
         imageFilePath = "http://" + domain + imageFilePath;
+        imageArray.push(imageFilePath);
       } else if ((imageFilePath.substring(0,7) === "http://") || (imageFilePath.substring(0,8) === "https://") ) {
-        // do nothing!!!
+        imageArray.push(imageFilePath);
       } else {
-      //  console.log("there may be a problem with this image ... check link.controller line 31");
-        // do nothing!!!
+        console.log("there may be a problem with this image ... check link.controller line 31" + imageFilePath);
       }
-      imageArray.push(imageFilePath)
+
     });
 
 
