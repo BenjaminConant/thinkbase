@@ -7,10 +7,6 @@ angular.module('quizerdApp')
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
       })
-      .when('/newboard', {
-        templateUrl: 'app/views/newboard.html',
-        controller: 'NewboardCtrl'
-      })
       .when('/myboards/:userId', {
         templateUrl: 'app/views/myboards.html',
         controller: 'MyboardsCtrl'
@@ -19,5 +15,4 @@ angular.module('quizerdApp')
         templateUrl: 'app/views/myboards.html',
         controller: 'MyboardsCtrl'
       });
-
   });
