@@ -122,7 +122,7 @@ angular.module('quizerdApp')
       board.save(newBoard).success(function(board) {
         $location.path('/myboards/' + Auth.getCurrentUser()._id +'/' + board._id);
       });
-     }
+git      }
 
 
 
