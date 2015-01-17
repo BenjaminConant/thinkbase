@@ -21,6 +21,19 @@ exports.index = function(req, res) {
 };
 
 /**
+ * Get a user profile for a non loged in user
+ * 
+ */
+exports.findOnePublic = function(req, res) {
+  var userId = req.params.id;
+  User.findById(userId, function (err, user) {
+    if (err) return next(err);
+    if (!user) return res.send(401);
+    res.json(200, user);
+  });
+};
+
+/**
  * Creates a new user
  */
 exports.create = function (req, res, next) {
@@ -61,6 +74,7 @@ exports.destroy = function(req, res) {
 /**
  * Change a users password
  */
+
 exports.changePassword = function(req, res, next) {
   var userId = req.user._id;
   var oldPass = String(req.body.oldPassword);
@@ -99,6 +113,7 @@ exports.changeBoards = function (req, res, next) {
  * Get my info
  */
 exports.me = function(req, res, next) {
+  console.log(req.user)
   var userId = req.user._id;
   User.findOne({
     _id: userId
