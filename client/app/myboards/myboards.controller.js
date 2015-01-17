@@ -158,6 +158,7 @@ angular.module('quizerdApp')
       var newBoard = new Board;
       newBoard.creatorId = Auth.getCurrentUser()._id;
       newBoard.title = "New Board"
+      newBoard.description = "A description of my new board!"
       board.save(newBoard).success(function(board) {
         $location.path('/myboards/' + Auth.getCurrentUser()._id +'/' + board._id);
       });
@@ -198,6 +199,15 @@ angular.module('quizerdApp')
           console.log(user);
           console.log("hello _________________________");
         })
+      }
+    }
+
+    $scope.toggleEditBoardDescription = function() {
+      if (!$scope.Board.editDescription) {
+        $scope.Board.editDescription = true;
+      } else {
+        $scope.Board.editDescription = false;
+        $scope.updateBoard();
       }
     }
 

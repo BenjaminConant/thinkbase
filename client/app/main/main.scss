@@ -28,9 +28,10 @@ body {
   text-align: center;
 }
 
-.title input {
-  background-color: whitesmoke;
+.title input, textarea {
+  background-color: white;
   outline: none;
+  border: 1px solid whitesmoke;
 }
 
 .link {
