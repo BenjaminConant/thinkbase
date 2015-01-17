@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('quizerdApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
+  .controller('LoginCtrl', function ($scope, Auth, $location, $window, User) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -13,9 +13,8 @@ angular.module('quizerdApp')
           email: $scope.user.email,
           password: $scope.user.password
         })
-        .then( function() {
-          // Logged in, redirect to home
-          $location.path('/');
+        .then( function(user) {
+          $location.path('/myboards/' + User.get()._id);
         })
         .catch( function(err) {
           $scope.errors.other = err.message;
