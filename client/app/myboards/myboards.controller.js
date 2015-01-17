@@ -1,16 +1,53 @@
 'use strict';
 
 angular.module('quizerdApp')
-  .controller('MyboardsCtrl', function ($scope, board, $location, Auth, $route, $routeParams, User, $http, $window) {
+  .controller('MyboardsCtrl', function ($scope, board, $location, Auth, $route, $routeParams, User, $http, $window, publicUser) {
+
+    // if there is a user then find the users info useing the User service, if there is no user then display the board
+    // useing the public user api
+
+    
+
+    
+
 
     // if there is no board id parameter passed, redirect to route with the first board id in user boards passed
     // if there is a board id paramerter passed, find that board and set it equal to $scope.Board
+    
     $scope.findBoard = function () {
-      User.get(function(user) {
+     Auth.isLoggedInAsync(function(loggedIn){
+      if (!loggedIn) {
+        publicUser.findOneUser($routeParams.userId).success(function(user) {
         $scope.currentUser = user;
-        if (!$routeParams.boardId) {
+          if (!$routeParams.boardId) {
             $location.path('myboards/' + $scope.currentUser._id + '/' + $scope.currentUser.boards[0].id);
-        } else {
+          } else {
+            board.findOne($routeParams.boardId).success(function(board) {
+              console.log(board);
+              $scope.Board = board;
+              $scope.Board.links.forEach(function(link) {
+                link.removeNote = function(index) {
+                  link.notes.splice(index, 1);
+                  $scope.updateBoard();
+                }
+              });
+              $scope.Board.editTitle = false;
+              $scope.isActive = function(id) {
+                if ($scope.Board._id === id) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }
+            });
+          }
+       })
+      }else{
+        User.get(function(user, err) {
+          $scope.currentUser = user;
+          if (!$routeParams.boardId) {
+            $location.path('myboards/' + $scope.currentUser._id + '/' + $scope.currentUser.boards[0].id);
+          } else {
             board.findOne($routeParams.boardId).success(function(board) {
               console.log(board);
               $scope.Board = board;
@@ -33,6 +70,8 @@ angular.module('quizerdApp')
           }
         });
       }
+    });
+    }
     $scope.findBoard();
 
 

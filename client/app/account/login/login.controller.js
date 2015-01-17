@@ -14,6 +14,8 @@ angular.module('quizerdApp')
           password: $scope.user.password
         })
         .then( function(user) {
+          console.log(user);
+          console.log(User.get());
           $location.path('/myboards/' + User.get()._id);
         })
         .catch( function(err) {
