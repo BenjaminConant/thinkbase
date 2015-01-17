@@ -19,80 +19,78 @@ exports.imdb = function (req, res) {
 };
 
 
-http://getbootstrap.com/
+
 
 exports.scrapeLink = function (req, res) {
-
   var url = req.body.url;
+
+  if (url.substring(0,7) === "http://") {
+    var domain = url.substring(7, url.length).split("/")[0];
+    domain = domain.split('.');
+    if (domains.indexOf(domain[0]) !== -1) {
+      domain.shift();
+    }
+    domain = domain.join('.');
+  } else {
+    var domain = url.substring(8, url.length).split("/")[0];
+  }
+
+
   request(url, function(error, response, html){
 
-
-
-    if (req.body.url.substring(0,7) === "http://") {
-      var domain = req.body.url.substring(7, req.body.url.length).split("/")[0];
-      domain = domain.split('.');
-      if (domains.indexOf(domain[0]) !== -1) {
-        domain.shift();
-      }
-      domain = domain.join('.');
-
+    if (error) {
+      console.log(error);
+      return res.json(200, {'title': url, 'images': [], 'domain': domain});
     } else {
-      var domain = req.body.url.substring(8, req.body.url.length).split("/")[0];
+
+      var $ = cheerio.load(html);
+      var title = $('title').html();
+      var body = $('body').html();
+      var images = $('body img').get();
+      var imageArray = [];
+
+      images.forEach(function(imageObject) {
+        if (imageObject.attribs.src) {
+          var imageFilePath = imageObject.attribs.src;
+        } else {
+          var imageFilePath = imageObject.attribs["ng-src"];
+        }
+
+        if (imageFilePath.substring(0,2) === "//" ) {
+          imageFilePath = "http:" + imageFilePath;
+          imageArray.push(imageFilePath);
+        } else if (imageFilePath.substring(0,1) === "/" ) {
+          imageFilePath = "http://" + domain + imageFilePath;
+          imageArray.push(imageFilePath);
+        } else if ((imageFilePath.substring(0,7) === "http://") || (imageFilePath.substring(0,8) === "https://") ) {
+          imageArray.push(imageFilePath);
+        } else {
+          console.log("there may be a problem with this image ... check link.controller line 31" + imageFilePath);
+        }
+
+      });
+          //   var favicon = $('link[rel="shortcut icon"]').get()
+          //   if (favicon[0]) {
+          //   favicon = favicon[0].attribs.href;
+          // } else {
+          //   favicon = $('link[rel="Shortcut Icon"]').get();
+          //   console.log("____________________________________________________________fdasfdasfdas");
+          //   console.log($('link[rel="Shortcut Icon"]').get());
+          //   var domain = req.body.url.substring(7, req.body.url.length - 1).split("/")[0];
+          //   favicon = "http://" + domain + favicon[0].attribs.href;
+          // }
+          //
+          //
+          //   console.log(favicon);
+          //  console.log(imageArray);
+      return res.json(200, {'title': title, 'images': imageArray, 'domain': domain});
+
+
+
     }
 
 
 
-
-    var $ = cheerio.load(html);
-    var title = $('title').html();
-    var body = $('body').html();
-
-
-
-    var images = $('body img').get();
-    var imageArray = [];
-
-    images.forEach(function(imageObject) {
-      if (imageObject.attribs.src) {
-        var imageFilePath = imageObject.attribs.src;
-      } else {
-        var imageFilePath = imageObject.attribs["ng-src"];
-      }
-
-      if (imageFilePath.substring(0,2) === "//" ) {
-        imageFilePath = "http:" + imageFilePath;
-        imageArray.push(imageFilePath);
-      } else if (imageFilePath.substring(0,1) === "/" ) {
-        imageFilePath = "http://" + domain + imageFilePath;
-        imageArray.push(imageFilePath);
-      } else if ((imageFilePath.substring(0,7) === "http://") || (imageFilePath.substring(0,8) === "https://") ) {
-        imageArray.push(imageFilePath);
-      } else {
-        console.log("there may be a problem with this image ... check link.controller line 31" + imageFilePath);
-      }
-
-    });
-
-
-
-  //   var favicon = $('link[rel="shortcut icon"]').get()
-  //   if (favicon[0]) {
-  //   favicon = favicon[0].attribs.href;
-  // } else {
-  //   favicon = $('link[rel="Shortcut Icon"]').get();
-  //   console.log("____________________________________________________________fdasfdasfdas");
-  //   console.log($('link[rel="Shortcut Icon"]').get());
-  //   var domain = req.body.url.substring(7, req.body.url.length - 1).split("/")[0];
-  //   favicon = "http://" + domain + favicon[0].attribs.href;
-  // }
-  //
-  //
-  //   console.log(favicon);
-
-
-
-  //  console.log(imageArray);
-    return res.json(200, {'title': title, 'images': imageArray, 'domain': domain});
   })
 };
 
