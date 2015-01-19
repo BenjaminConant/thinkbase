@@ -3,19 +3,13 @@
 angular.module('quizerdApp')
   .controller('MyboardsCtrl', function ($scope, board, $location, Auth, $route, $routeParams, User, $http, $window, publicUser) {
 
-    // if there is a user then find the users info useing the User service, if there is no user then display the board
-    // useing the public user api
-
-    
-
-    
-
-
+   $scope.userloggedin = true;
     // if there is no board id parameter passed, redirect to route with the first board id in user boards passed
     // if there is a board id paramerter passed, find that board and set it equal to $scope.Board
     
     $scope.findBoard = function () {
      Auth.isLoggedInAsync(function(loggedIn){
+    $scope.userloggedin = loggedIn;      
       if (!loggedIn) {
         publicUser.findOneUser($routeParams.userId).success(function(user) {
         $scope.currentUser = user;
@@ -73,6 +67,7 @@ angular.module('quizerdApp')
     });
     }
     $scope.findBoard();
+    console.log($scope.userloggedin);
 
 
 
