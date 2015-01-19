@@ -3,19 +3,19 @@
 angular.module('quizerdApp')
   .controller('MyboardsCtrl', function ($scope, board, $location, Auth, $route, $routeParams, User, $http, $window, publicUser) {
 
-    // if there is a user then find the users info useing the User service, if there is no user then display the board
-    // useing the public user api
+    var img = new Image();
+    img.onload = function() {
+    console.log(this.width + 'x' + this.height);
+    }
+    img.src = 'http://www.google.com/intl/en_ALL/images/logo.gif';
 
-    
-
-    
-
-
+   $scope.userloggedin = true;
     // if there is no board id parameter passed, redirect to route with the first board id in user boards passed
     // if there is a board id paramerter passed, find that board and set it equal to $scope.Board
     
     $scope.findBoard = function () {
      Auth.isLoggedInAsync(function(loggedIn){
+    $scope.userloggedin = loggedIn;      
       if (!loggedIn) {
         publicUser.findOneUser($routeParams.userId).success(function(user) {
         $scope.currentUser = user;
@@ -30,6 +30,17 @@ angular.module('quizerdApp')
                   link.notes.splice(index, 1);
                   $scope.updateBoard();
                 }
+                var realImgArray = [];
+                link.images.forEach(function(imgURL) {
+                  var img = new Image();
+                  img.onload = function() {
+                    if (this.width >= 20 && this.height >= 20){
+                      realImgArray.push(imgURL);
+                      link.images = realImgArray;
+                    }
+                  }
+                  img.src = imgURL;
+                });
               });
               $scope.Board.editTitle = false;
               $scope.isActive = function(id) {
@@ -56,6 +67,18 @@ angular.module('quizerdApp')
                   link.notes.splice(index, 1);
                   $scope.updateBoard();
                 }
+                var realImgArray = [];
+                link.images.forEach(function(imgURL) {
+                  var img = new Image();
+                  img.onload = function() {
+                    if (this.width >= 20 && this.height >= 20){
+                      realImgArray.push(imgURL);
+                      link.images = realImgArray;
+                    }
+                  }
+                  img.src = imgURL;
+                });
+                
               });
 
               $scope.Board.editTitle = false;
@@ -73,6 +96,7 @@ angular.module('quizerdApp')
     });
     }
     $scope.findBoard();
+
 
 
 
@@ -155,6 +179,7 @@ angular.module('quizerdApp')
 
 
      $scope.newBoard = function () {
+      if ($scope.userloggedin) { 
       var newBoard = new Board;
       newBoard.creatorId = Auth.getCurrentUser()._id;
       newBoard.title = "New Board"
@@ -162,6 +187,7 @@ angular.module('quizerdApp')
       board.save(newBoard).success(function(board) {
         $location.path('/myboards/' + Auth.getCurrentUser()._id +'/' + board._id);
       });
+    }
     }
 
 
@@ -183,41 +209,49 @@ angular.module('quizerdApp')
 
     // handels editing a boards title
     $scope.toggleEditBoardTitle = function() {
-      if (!$scope.Board.editTitle) {
-        $scope.Board.editTitle = true;
-      } else {
-        $scope.Board.editTitle = false;
-        $scope.updateBoard();
-        $scope.currentUser.boards.forEach(function(boardMeta) {
-          if (boardMeta.id === $scope.Board._id) {
-            boardMeta.title = $scope.Board.title;
-          }
-        });
-        User.changeBoards({ id: $scope.currentUser._id }, {boards: $scope.currentUser.boards},
-        function (user){
-          console.log("hello _________________________");
-          console.log(user);
-          console.log("hello _________________________");
-        })
+       if ($scope.userloggedin) { 
+        if ($scope.userisloggedin)
+        if (!$scope.Board.editTitle) {
+          $scope.Board.editTitle = true;
+        } else {
+          $scope.Board.editTitle = false;
+          $scope.updateBoard();
+          $scope.currentUser.boards.forEach(function(boardMeta) {
+            if (boardMeta.id === $scope.Board._id) {
+              boardMeta.title = $scope.Board.title;
+            }
+          });
+          User.changeBoards({ id: $scope.currentUser._id }, {boards: $scope.currentUser.boards},
+          function (user){
+            console.log("hello _________________________");
+            console.log(user);
+            console.log("hello _________________________");
+          })
+        }
       }
     }
 
     $scope.toggleEditBoardDescription = function() {
-      if (!$scope.Board.editDescription) {
-        $scope.Board.editDescription = true;
-      } else {
-        $scope.Board.editDescription = false;
-        $scope.updateBoard();
-      }
+      if ($scope.userloggedin) { 
+        if (!$scope.Board.editDescription) {
+          $scope.Board.editDescription = true;
+        } else {
+          $scope.Board.editDescription = false;
+          $scope.updateBoard();
+        }
+    }
     }
 
     $scope.updateBoard = function(){
-      board.update($scope.Board).success(function(boardMeta) {
-        $scope.findBoard();
-      });
+      if ($scope.userloggedin) { 
+        board.update($scope.Board).success(function(boardMeta) {
+          $scope.findBoard();
+        });
+      }
     }
 
     $scope.deleteBoard = function() {
+     if ($scope.userloggedin) { 
       board.delete($scope.Board._id).success(function(board){
         var index;
         $scope.currentUser.boards.forEach(function(boardMeta, indx) {
@@ -234,6 +268,7 @@ angular.module('quizerdApp')
           })
         $location.path('/myboards/' + $scope.currentUser._id + '/' + $scope.currentUser.boards[$scope.currentUser.boards.length - 1].id);
       })
+    }
     }
 
 
