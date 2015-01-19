@@ -243,11 +243,9 @@ angular.module('quizerdApp')
     }
 
     $scope.updateBoard = function(){
-      if ($scope.userloggedin) { 
         board.update($scope.Board).success(function(boardMeta) {
           $scope.findBoard();
         });
-      }
     }
 
     $scope.deleteBoard = function() {

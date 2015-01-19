@@ -72,7 +72,9 @@
           <p><b>Notes:</b></p>
           <div ng-repeat="note in link.notes">
             <table class="table table-striped">
-              <tr ng-hide="note.edit"> {{note.text}} <span ng-click="link.removeNote($index)" class="glyphicon glyphicon-remove pull-right"></span></tr>
+            <tr ng-hide="note.edit">
+               {{note.text}} <span ng-show="userisloggedin" ng-click="link.removeNote($index)" class="glyphicon glyphicon-remove pull-right"></span>
+             </tr>
             </table>
             <form ng-show="note.edit" ng-submit="note.toggleEdit()">
               <input ng-model="note.text" type="text" name="text" placeholder="write somthing ...">
