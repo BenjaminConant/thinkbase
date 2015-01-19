@@ -22,6 +22,8 @@ exports.imdb = function (req, res) {
 
 
 exports.scrapeLink = function (req, res) {
+  
+
   var url = req.body.url;
   if (url.substring(0,7) === "http://") {
     var domain = url.substring(7, url.length).split("/")[0];
