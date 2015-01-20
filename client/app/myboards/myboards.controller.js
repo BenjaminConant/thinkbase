@@ -98,6 +98,8 @@ angular.module('quizerdApp')
     function Link() {
       this.url = "";
       this.title = "";
+      this.description= "";
+      this.domain = "";
       this.notes = [];
       this.images = [];
       this.displayImageIndex;
@@ -134,15 +136,17 @@ angular.module('quizerdApp')
        $http.post('/api/links/', {'url': link.url}).success(function(linkData) {
          console.log(linkData);
          link.title = linkData.title;
+         link.description = linkData.description;
          link.images = linkData.images;
+         link.domain = linkData.domain;
          link.displayImageIndex = 0;
          link.edit = !link.edit;
-         console.log(linkData.domain);
-         link.domain = linkData.domain;
          $scope.updateBoard();
        });
      }
 
+
+     // handels scrolling through images of a link
      $scope.linkImageScroll = function (link, direction) {
        if (direction === "right") {
          link.displayImageIndex += 1;
@@ -172,7 +176,7 @@ angular.module('quizerdApp')
        this.links = [];
      }
 
-
+     // creates a new board
      $scope.newBoard = function () {
       if ($scope.userloggedin) { 
       var newBoard = new Board;

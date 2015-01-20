@@ -39,14 +39,31 @@ exports.scrapeLink = function (req, res) {
   request(url, function(error, response, html){
     if (error) {
       console.log(error);
-      return res.json(200, {'title': url, 'images': [], 'domain': domain});
+      return res.json(200, {'title': url, 'images': [], 'domain': domain, 'rejected': true});
     } else {
       var $ = cheerio.load(html);
       var title = $('title').html();
+      var metas = $('head meta').get();
+      console.log(metas);
+      var description = "";
+      var imageArray = [];
+      
+      metas.forEach(function(metaObject) {
+        // get non og description
+        if (metaObject.attribs.name === 'description' || metaObject.attribs.name === 'Description' ) {
+          description = metaObject.attribs.content;
+        }
+        // get og:image
+        if (metaObject.attribs.property === 'og:image') {
+          imageArray.push(metaObject.attribs.content);
+        }
+      });
+     
+
+
+
       var body = $('body').html();
       var images = $('body img').get();
-      console.log(images);
-      var imageArray = [];
       images.forEach(function(imageObject) {
         if (imageObject.attribs.src) {
           var imageFilePath = imageObject.attribs.src;
@@ -63,25 +80,20 @@ exports.scrapeLink = function (req, res) {
           } else if ((imageFilePath.substring(0,7) === "http://") || (imageFilePath.substring(0,8) === "https://") ) {
             imageArray.push(imageFilePath);
           } else {
-            console.log("there may be a problem with this image ... check link.controller line 31" + imageFilePath);
+           
           }          
         }
       });
-          //   var favicon = $('link[rel="shortcut icon"]').get()
-          //   if (favicon[0]) {
-          //   favicon = favicon[0].attribs.href;
-          // } else {
-          //   favicon = $('link[rel="Shortcut Icon"]').get();
-          //   console.log("____________________________________________________________fdasfdasfdas");
-          //   console.log($('link[rel="Shortcut Icon"]').get());
-          //   var domain = req.body.url.substring(7, req.body.url.length - 1).split("/")[0];
-          //   favicon = "http://" + domain + favicon[0].attribs.href;
-          // }
-          //
-          //
-          //   console.log(favicon);
-          //  console.log(imageArray);
-      return res.json(200, {'title': title, 'images': imageArray, 'domain': domain});
+      
+      console.log(description + "this is the description 84");
+      var returnObject = {
+        'title': title,
+        'description': description,
+        'images': imageArray, 
+        'domain': domain
+      }
+      console.log(returnObject.description + "this is the description 91");
+      return res.json(200, returnObject);
     }
   })
 };

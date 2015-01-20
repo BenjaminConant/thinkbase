@@ -44,20 +44,24 @@
         <div class="link-admin-bar">
           <span ng-click="removeLink($index)" class="glyphicon glyphicon-remove pull-right"></span>
         </div>
+        
         <div class="link-content">
            <div ng-show="link.images.length > 0">
              <span class="glyphicon glyphicon-chevron-left" ng-click="linkImageScroll(link, 'left')"></span>
              <img ng-show="link.images" class="link-thumbnail-image" ng-src="{{link.images[link.displayImageIndex]}}"/>
              <span class="glyphicon glyphicon-chevron-right" ng-click="linkImageScroll(link, 'right')"></span>
            </div>
-             <div class="link-url">
+           <div class="link-url">
             <form ng-submit="scrapeLink(link)">
               <input ng-show="link.edit" ng-model="link.url" placeholder="place link here">
             </form>
-            <div class="text-left domain-text" ng-hide="link.edit"><strong>{{link.domain}}</strong></div>
             <a ng-hide="link.edit" target="_blank" href="link.url" ng-click="openLink(link.url)" ng-bind-html="link.title"></a>
+            <div ng-bind-html="link.description"></div>
+            <div class="text-left domain-text" ng-hide="link.edit"><strong>{{link.domain}}</strong></div>
           </div>
         </div>
+
+
 
         <div class="notes">
           <p><b>Notes:</b></p>

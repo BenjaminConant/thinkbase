@@ -37,6 +37,40 @@ angular.module('quizerdApp')
       console.log("hello");
      }
 
+     $scope.addLink = function () {
+       var link = new Link;
+       link.edit = false;
+       link.shouldEdit = function() {
+         if (link.url === "") link.edit = true;
+       };
+       link.shouldEdit();
+       link.toggleEdit = function(){
+         link.edit = !link.edit;
+       };
+
+       $scope.Board.links.push(link);
+       $scope.updateBoard();
+     }
+     // reomve link from board
+     $scope.removeLink = function (index) {
+       $scope.Board.links.splice(index, 1);
+       $scope.updateBoard();
+     }
+
+     // api call to server side scrape of link url
+     $scope.scrapeLink = function(link) {
+       $http.post('/api/links/', {'url': link.url}).success(function(linkData) {
+         console.log(linkData);
+         link.title = linkData.title;
+         link.images = linkData.images;
+         link.displayImageIndex = 0;
+         link.edit = !link.edit;
+         console.log(linkData.domain);
+         link.domain = linkData.domain;
+         $scope.updateBoard();
+       });
+     }
+
      
 
 
