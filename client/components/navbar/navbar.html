@@ -1,29 +1,36 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+<!-- <div class="navbar navbar-inverse navbar-static-top" ng-controller="NavbarCtrl">
   <div class="container">
     <div class="navbar-header">
-      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/" class="navbar-brand">Anchormob</a>
+       <a href="/" class="navbar-brand">linkwire</a> 
     </div>
     <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
-        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-            <a ng-href="{{item.link}}">{{item.title}}</a>
-        </li>
         <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a href="/admin">Admin</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Welcome friend! Sign up</a></li>
-        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">or, Login!</a></li>
-        <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p> </li>
+        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a id="sign-up-btn" href="/signup"> <button class="btn btn-primary navbar-btn"> Sign up </button></a></li>
+        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a id="log-in-btn" href="/login"> <button class="btn btn-primary navbar-btn"> Log in </button></a></li>
+        <li ng-show="isLoggedIn()"> <p class="navbar-text">Hello {{ getCurrentUser().name }}</p></li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Logout</a></li>
       </ul>
     </div>
   </div>
-</div>
+</div> -->
+
+
+
+
+<nav class="navbar navbar-inverse" ng-controller="NavbarCtrl">
+  <div class="container">
+    <div class="navbar-header">
+       <a  class="navbar-brand" href="/">linkwire</a> 
+    </div>
+
+    <div class="collapse navbar-collapse pull-right">
+      <a href="/signup"><button type="button" class="btn btn-primary navbar-btn"> Sign Up </button></a>
+      <a href="/login"><button type="button" class="btn btn-primary navbar-btn"> Sign In </button></a>
+    </div>
+  </div>
+</nav>

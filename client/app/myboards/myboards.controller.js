@@ -3,11 +3,6 @@
 angular.module('quizerdApp')
   .controller('MyboardsCtrl', function ($scope, board, $location, Auth, $route, $routeParams, User, $http, $window, publicUser) {
 
-    var img = new Image();
-    img.onload = function() {
-    console.log(this.width + 'x' + this.height);
-    }
-    img.src = 'http://www.google.com/intl/en_ALL/images/logo.gif';
 
    $scope.userloggedin = true;
     // if there is no board id parameter passed, redirect to route with the first board id in user boards passed

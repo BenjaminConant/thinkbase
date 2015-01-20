@@ -1,21 +1,99 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>linkwire</h1>
-    <p class="lead"> - organized internet - </p>
-  <!--   <img src="assets/images/yeoman.png" alt="I'm Yeoman"> -->
-  </div>
-</header>
+
+
 
 <div class="container" id="landing-page-content">
-  <h1>
-  <a href="myboards/{{userId}}" ng-hide="isLoggedIn()" class="btn btn-primary">My Boards</a>
-  </h1>
+  <div class="row">
+    <div class="btn-group" role="group" aria-label="...">
+      <a type="button" class="btn btn-default active">{{Board.title}}</a>
+      <div ng-click="newBoard()" type="button" class="btn btn-primary">add new board <span class="glyphicon glyphicon-plus"><span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <button type="button" ng-click="deleteBoard()" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"><span></button>
+    <button type="button" ng-click="shareBoard()" class="btn btn-success pull-left"> Share this board <span class="glyphicon glyphicon-share"><span></button>
+
+  </div>
+
+  <div class="row link-wrapper">
+    
+      <h1 class="col-md-12">
+        <form ng-show="Board.editTitle" class="title" ng-submit="toggleEditBoardTitle()">
+          <input ng-model="Board.title" placeholder="My first board">
+        </form>
+        <div ng-hide="Board.editTitle">
+          <p ng-click="toggleEditBoardTitle()">{{Board.title}}</p>
+        </div>
+      </h1>
+
+    
+      <h1 class="col-md-12">
+        <form ng-show="Board.editDescription" class="title" ng-submit="toggleEditBoardDescription()">
+          <textarea class="lead text-left" ng-model="Board.description" placeholder="My first board"></textarea>
+          <div><button type="submit" class="btn btn-primary">submit</button></div>
+        </form>
+        <div ng-hide="Board.editDescription">
+          <p ng-click="toggleEditBoardDescription()" class="lead text-center"><em>Welcome to <strong> linkwire </strong> - a tool that helps you organize, annotate, and share the internet that is important to you. Start building your first board by clicking around this page. Make sure to </em><a href="/signup" ng-click='hello()' class='btn btn-primary'> Sign Up </a><em> to save your progress!"</p>
+        </div>
+      </h1>
+    
+  </div>
+
+
+  <div class="row link-grid">
+    <div class="col-md-4 link" ng-repeat="link in Board.links">
+      <div class="link-wrapper">
+        <div class="link-admin-bar">
+          <span ng-click="removeLink($index)" class="glyphicon glyphicon-remove pull-right"></span>
+        </div>
+        <div class="link-content">
+           <div ng-show="link.images.length > 0">
+             <span class="glyphicon glyphicon-chevron-left" ng-click="linkImageScroll(link, 'left')"></span>
+             <img ng-show="link.images" class="link-thumbnail-image" ng-src="{{link.images[link.displayImageIndex]}}"/>
+             <span class="glyphicon glyphicon-chevron-right" ng-click="linkImageScroll(link, 'right')"></span>
+           </div>
+             <div class="link-url">
+            <form ng-submit="scrapeLink(link)">
+              <input ng-show="link.edit" ng-model="link.url" placeholder="place link here">
+            </form>
+            <div class="text-left domain-text" ng-hide="link.edit"><strong>{{link.domain}}</strong></div>
+            <a ng-hide="link.edit" target="_blank" href="link.url" ng-click="openLink(link.url)" ng-bind-html="link.title"></a>
+          </div>
+        </div>
+
+        <div class="notes">
+          <p><b>Notes:</b></p>
+          <div ng-repeat="note in link.notes">
+            <table class="table table-striped">
+            <tr ng-hide="note.edit">
+               {{note.text}} <span ng-show="userisloggedin" ng-click="link.removeNote($index)" class="glyphicon glyphicon-remove pull-right"></span>
+             </tr>
+            </table>
+            <form ng-show="note.edit" ng-submit="note.toggleEdit()">
+              <input ng-model="note.text" type="text" name="text" placeholder="write somthing ...">
+            </form>
+        </div>
+          <form ng-submit="addNote(link, noteText)">
+            <input ng-model="noteText" type="text" name="text" placeholder="Annotate!">
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-3 col-md-offset-1 add-link">
+      <button class="btn btn-success" ng-click="addLink()">add link</button>
+    </div>
+
+
+
+  </div>
 </div>
 
 <footer class="footer">
   <div class="container">
-      <p>linkwire | organized internet</p>
+    <p>Anchormob | organize your internet</p>
   </div>
 </footer>
